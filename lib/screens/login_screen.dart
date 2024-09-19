@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -9,7 +10,8 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with TickerProviderStateMixin {
   final _codeController = TextEditingController();
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -18,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   @override
   void initState() {
     super.initState();
-    
+
     _controller = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
@@ -50,15 +52,19 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     setState(() => _isLoading = true);
 
     final code = _codeController.text;
-    final String url = "'http://127.0.0.1:8000/verificar/$code";
+    final String url = "http://127.0.0.1:8000/verificar/$code";
 
     try {
       final response = await http.post(Uri.parse(url));
+      final data = json.decode(response.body);
 
-      if (response.statusCode == 200 && response.body == '1') {
-        Navigator.pushReplacementNamed(context, '/home');
-      } else {
+      if (data == 0) {
         _mostrarError('Código incorrecto');
+      } else {
+        Navigator.pushReplacementNamed(context, '/home', arguments: {
+          'id': data['ID'],
+          'nombre': data['Nombre'],
+        });
       }
     } catch (e) {
       _mostrarError('Error de conexión: $e');
@@ -124,17 +130,21 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                     onPressed: _isLoading ? null : _login,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 80.0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16.0, horizontal: 80.0),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     child: _isLoading
-                      ? const CircularProgressIndicator(color: Colors.deepPurpleAccent)
-                      : const Text(
-                          'Iniciar Sesión',
-                          style: TextStyle(color: Colors.deepPurpleAccent, fontWeight: FontWeight.bold),
-                        ),
+                        ? const CircularProgressIndicator(
+                            color: Colors.deepPurpleAccent)
+                        : const Text(
+                            'Iniciar Sesión',
+                            style: TextStyle(
+                                color: Colors.deepPurpleAccent,
+                                fontWeight: FontWeight.bold),
+                          ),
                   ),
                 ],
               ),

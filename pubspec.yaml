@@ -23,6 +23,6 @@ flutter:
   uses-material-design: true
   assets:
     - lib/img/teste.png
-    - assets/tables.json
-    - assets/menu.json
+    # - assets/tables.json
+    # - assets/menu.json
 
