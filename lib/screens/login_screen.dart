@@ -56,15 +56,22 @@ class _LoginScreenState extends State<LoginScreen>
 
     try {
       final response = await http.post(Uri.parse(url));
-      final data = json.decode(response.body);
 
-      if (data == 0) {
-        _mostrarError('Código incorrecto');
+      // Verificar si la respuesta es exitosa
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+
+        if (data['verificado'] == 1) {
+          // Código verificado correctamente
+          Navigator.pushReplacementNamed(context, '/home', arguments: {
+            'id': data['ID'],
+            'nombre': data['Nombre'],
+          });
+        } else {
+          _mostrarError('Código incorrecto');
+        }
       } else {
-        Navigator.pushReplacementNamed(context, '/home', arguments: {
-          'id': data['ID'],
-          'nombre': data['Nombre'],
-        });
+        _mostrarError('Error del servidor: ${response.statusCode}');
       }
     } catch (e) {
       _mostrarError('Error de conexión: $e');

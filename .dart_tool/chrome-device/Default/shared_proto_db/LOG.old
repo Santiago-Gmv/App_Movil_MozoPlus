@@ -1,2 +1,3 @@
-2024/09/18-12:38:18.039 1006f Creating DB /tmp/flutter_tools.QMMQGQ/flutter_tools_chrome_device.FHRHXF/Default/shared_proto_db since it was missing.
-2024/09/18-12:38:18.039 1006f Reusing MANIFEST /tmp/flutter_tools.QMMQGQ/flutter_tools_chrome_device.FHRHXF/Default/shared_proto_db/MANIFEST-000001
+2024/09/20-19:38:24.863 982d Reusing MANIFEST /tmp/flutter_tools.WMXAWH/flutter_tools_chrome_device.FCQVTR/Default/shared_proto_db/MANIFEST-000001
+2024/09/20-19:38:24.863 982d Recovering log #3
+2024/09/20-19:38:24.864 982d Reusing old log /tmp/flutter_tools.WMXAWH/flutter_tools_chrome_device.FCQVTR/Default/shared_proto_db/000003.log 
